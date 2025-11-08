@@ -1,0 +1,56 @@
+/* Tailwind v4 */
+@import "tailwindcss";
+
+/* Thème (v4) : couleurs + fonts */
+@theme {
+  --color-base-black: #000800;
+  --color-base-white: #e2e2e2;
+  --color-base-red: #c71212;
+
+  --color-accent-chroma: #f24aff;
+
+  /* Fonts (liées à next/font via CSS vars) */
+  --font-display: var(--font-reverb);
+  --font-body: var(--font-body);
+}
+
+/* Atmosphère globale */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-base-black);
+  color: var(--color-base-white);
+  font-family: var(--font-body);
+
+  /* Grain (dossier public/) */
+  background-image: url("/textures/grain.png");
+  background-repeat: repeat;
+  background-size: 300px;
+  background-blend-mode: overlay;
+  filter: contrast(150%);
+  opacity: 1;
+}
+
+/* Option : couche de grain “vivant” (doucement) */
+@keyframes grainShift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 300px 300px;
+  }
+}
+.grain-live {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background-image: url("/textures/grain.png");
+  background-repeat: repeat;
+  background-size: 300px;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+  animation: grainShift 15s linear infinite;
+}
