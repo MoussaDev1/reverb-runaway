@@ -26,7 +26,6 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${reverb.variable} ${body.variable}`}>
       <body className="bg-base-black text-base-white antialiased">
-        <div className="grain-live"></div>
         {children}
       </body>
     </html>
