@@ -3,6 +3,7 @@ import { Anton, Inter } from "next/font/google";
 import "../styles/globals.css";
 import GrainOverlay from "@/components/GrainOverlay";
 import Navbar from "@/components/Navbar";
+import useLenis from "@/hooks/useLenis";
 
 const anton = Anton({
   subsets: ["latin"],
