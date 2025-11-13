@@ -3,12 +3,15 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import IntroTitle from "./IntroTitle";
+import HeroVideo from "./HeroVideo";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Hero() {
   const sceneRef = useRef<HTMLDivElement>(null!);
   const titleRef = useRef<HTMLHeadingElement>(null!);
+  const videoRef = useRef<HTMLVideoElement>(null!);
 
   /** 1. Forcer scroll en haut + bloquer scroll **/
   useEffect(() => {
@@ -72,20 +75,13 @@ export default function Hero() {
   );
 
   return (
-    <section>
+    <section className="bg-black">
       <div
         ref={sceneRef}
-        className="hero-container relative h-[500vh] bg-black overflow-hidden"
+        className="hero-container relative h-[500vh] overflow-hidden"
       >
-        {/* TEXTE FIXED */}
-        <h1
-          ref={titleRef}
-          className="title fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-                   text-[12vw] font-display text-accent uppercase tracking-tight 
-                   whitespace-nowrap z-30 mix-blend-difference"
-        >
-          REVERB
-        </h1>
+        <IntroTitle ref={titleRef} />
+        <HeroVideo ref={videoRef} />
 
         {/* CONTENU QUI ARRIVE APRES LE ZOOM */}
         <div className="absolute inset-0 flex items-center justify-center z-0 opacity-100">

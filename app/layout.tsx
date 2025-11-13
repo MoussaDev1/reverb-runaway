@@ -30,7 +30,6 @@ export default function RootLayout({
     <html lang="fr" className={`${anton.variable} ${inter.variable}`}>
       <body className="bg-bg-black">
         <GrainOverlay />
-        <Navbar />
         {children}
       </body>
     </html>
