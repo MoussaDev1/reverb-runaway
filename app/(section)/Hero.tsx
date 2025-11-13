@@ -89,7 +89,7 @@ export default function Hero() {
           ref={reverbText}
           className="font-[var(--font-title)] text-5xl sm:text-7xl md:text-8xl text-[var(--color-accent)] tracking-tight"
         >
-          REVERB
+          REVERB ↓ Scroll down
         </h1>
         <h2
           ref={titleText}
