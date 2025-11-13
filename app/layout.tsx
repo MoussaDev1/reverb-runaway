@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { Anton, Inter } from "next/font/google";
 import "../styles/globals.css";
+import GrainOverlay from "@/components/GrainOverlay";
+import Navbar from "@/components/Navbar";
+import useLenis from "@/hooks/useLenis";
 
-const reverb = Anton({
+const anton = Anton({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-reverb",
 });
 
-const body = Inter({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
 });
@@ -24,9 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${reverb.variable} ${body.variable}`}>
-      <body className="bg-base-black text-base-white antialiased">
-        <div className="grain-live"></div>
+    <html lang="fr" className={`${anton.variable} ${inter.variable}`}>
+      <body className="bg-bg-black">
+        <GrainOverlay />
         {children}
       </body>
     </html>
