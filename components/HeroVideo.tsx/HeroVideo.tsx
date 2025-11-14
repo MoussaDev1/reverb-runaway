@@ -4,8 +4,12 @@ const HeroVideo = forwardRef<HTMLVideoElement>((props, ref) => {
   return (
     <video
       ref={ref}
-      className="absolute inset-0 w-full h-full object-cover"
+      className="hero-video absolute inset-0 w-full h-full object-cover -z-10"
       src="/video/9510023-uhd_4096_2160_25fps.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
     ></video>
   );
 });

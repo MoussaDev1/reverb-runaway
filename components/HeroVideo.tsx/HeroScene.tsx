@@ -9,9 +9,9 @@ import HeroVideo from "./HeroVideo";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Hero() {
-  const sceneRef = useRef<HTMLDivElement>(null!);
-  const titleRef = useRef<HTMLHeadingElement>(null!);
-  const videoRef = useRef<HTMLVideoElement>(null!);
+  const sceneRef = useRef<HTMLDivElement | null>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   /** 1. Forcer scroll en haut + bloquer scroll **/
   useEffect(() => {
@@ -29,68 +29,55 @@ export default function Hero() {
     };
   }, []);
 
-  useGSAP(
-    ({ scope }) => {
-      const title = titleRef.current;
+  useGSAP(() => {
+    /** INTRO **/
+    const intro = gsap.timeline({
+      onComplete: () => {
+        // Le texte a été masqué → maintenant tu peux le supprimer
 
-      /** INTRO **/
-      const intro = gsap.timeline({
-        onComplete: () => {
-          document.documentElement.classList.remove("no-scroll");
-          document.body.classList.remove("no-scroll");
-          ScrollTrigger.refresh();
-        },
-      });
+        // La vidéo devient normale (plus dans les lettres)
 
-      intro.fromTo(
-        title,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 1.4, ease: "power3.out" }
-      );
+        // Débloquer le scroll
+        document.documentElement.classList.remove("no-scroll");
+        document.body.classList.remove("no-scroll");
+      },
+    });
 
-      /** SCROLL ZOOM **/
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: scope,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-          pin: true,
-        },
-      });
-
-      tl.to(title, {
-        scale: 60,
-        xPercent: 235,
-        ease: "power2.out",
+    intro
+      .from(titleRef.current!, {
+        opacity: 0.6,
+        scale: 0.8,
+        duration: 1.4,
+        ease: "power3.in",
       })
-        .to(title, { opacity: 0, duration: 0.3, ease: "power1.in" })
-        .set(title, { display: "none" }); // IMPORTANT: plus devant !
-
-      return () => {
-        tl.kill();
-      };
-    },
-    { scope: sceneRef }
-  );
+      .to(
+        videoRef.current!,
+        { opacity: 1, duration: 3.5, ease: "power2.out" },
+        "<"
+      )
+      .to(
+        titleRef.current!,
+        {
+          scale: 30,
+          xPercent: 255,
+          duration: 3,
+          ease: "power3.inOut",
+          opacity: 1,
+        },
+        "<"
+      )
+      .to(titleRef.current!, {
+        opacity: 0,
+        ease: "power3.inOut",
+      });
+  });
 
   return (
-    <section className="bg-black">
-      <div
-        ref={sceneRef}
-        className="hero-container relative h-[500vh] overflow-hidden"
-      >
-        <IntroTitle ref={titleRef} />
+    <section className="w-screen min-h-screen overflow-x-hidden  border-red-500">
+      <div ref={sceneRef} className="hero-container min-h-screen">
         <HeroVideo ref={videoRef} />
-
-        {/* CONTENU QUI ARRIVE APRES LE ZOOM */}
-        <div className="absolute inset-0 flex items-center justify-center z-0 opacity-100">
-          <div className="text-center text-white">
-            <h2 className="text-4xl font-bold">Bienvenue dans Reverb</h2>
-            <p className="max-w-lg mx-auto mt-4 opacity-80">
-              Ceci est la section révélée après le zoom ✨
-            </p>
-          </div>
+        <div className="mask-hero h-screen w-full bg-bg-black flex items-center justify-center mix-blend-screen">
+          <IntroTitle ref={titleRef} />
         </div>
       </div>
       <div>

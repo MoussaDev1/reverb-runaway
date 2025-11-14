@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${anton.variable} ${inter.variable}`}>
-      <body className="bg-bg-black">
+      <body>
         <GrainOverlay />
         {children}
       </body>

@@ -14,8 +14,6 @@
 }
 
 body {
-  background-color: var(--color-bg-black);
-  color: var(--color-text);
   font-family: var(--font-body);
   scroll-behavior: smooth;
 }
