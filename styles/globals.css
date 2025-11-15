@@ -23,3 +23,23 @@ body.no-scroll {
   overflow: hidden;
   height: 100%;
 }
+
+/* video dans le masque */
+.mask-layer {
+  transform: scale(calc(1 + var(--progress) * 6));
+  transform-origin: 45%;
+  will-change: transform;
+}
+
+/* vidéo visible dans le masque */
+.masked-video {
+  transform: scale(calc(0.8 + var(--progress) * 0.2));
+  opacity: calc(0.4 + var(--progress) * 0.6);
+  filter: blur(calc((1 - var(--progress)) * 8px));
+  will-change: transform, opacity, filter;
+}
+
+.mask-text-node {
+  transform-box: fill-box;
+  transform-origin: center;
+}

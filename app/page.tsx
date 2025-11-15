@@ -1,6 +1,6 @@
 // app/page.tsx
 "use client";
-import Hero from "@/components/Hero.tsx/Hero";
+import Hero from "@/components/Hero/Hero";
 
 // import Navbar si tu veux l’afficher après le Hero
 
