@@ -35,13 +35,18 @@ body.no-scroll {
 
 .title-container {
   display: flex;
-}
+  font-size: clamp(3rem, 10vw, 8rem);
 
-.title-welcome {
-  transform: translate3d(calc(var(--progress) * (-120vw + 100%) - 0.5vw), 0, 0)
-    translateY(var(--enter-offset, 0px));
-}
-.title-name {
-  transform: translate3d(calc(var(--progress) * (100vw - 100%) + 0.5vw), 0, 0)
-    translateY(var(--enter-offset, 0px));
+  .title-welcome {
+    transform: translate3d(
+        calc(var(--progress) * (-110vw + 100%) - 0.5vw),
+        0,
+        0
+      )
+      translateY(var(--enter-offset, 0px));
+  }
+  .title-name {
+    transform: translate3d(calc(var(--progress) * (100vw - 100%) + 0.5vw), 0, 0)
+      translateY(var(--enter-offset, 0px));
+  }
 }

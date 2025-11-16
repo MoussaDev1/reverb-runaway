@@ -1,26 +1,16 @@
 import { forwardRef } from "react";
 
-const HeroMask = forwardRef<SVGSVGElement>((props, ref) => {
+const HeroMask = forwardRef<HTMLHeadingElement>((props, ref) => {
   return (
-    <svg ref={ref} className="absolute inset-0 w-full h-full text-[12vw]">
-      <mask id="text-mask">
-        <rect width="100%" height="100%" fill="white" />
-        <text
-          id="mask-text"
-          x="50%"
-          y="50%"
-          fontFamily="var(--font-reverb)"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fontSize="20vw"
-          color="red"
-        >
-          REVERB
-        </text>
-      </mask>
-
-      <rect width="100%" height="100%" fill="black" mask="url(#text-mask)" />
-    </svg>
+    <div className="title-hero-container relative">
+      <h1
+        ref={ref}
+        className="title-container font-display text-[20vh] text-accent"
+      >
+        <span className="title-welcome">WELCOME</span>
+        <span className="title-name">REVERBE</span>
+      </h1>
+    </div>
   );
 });
 

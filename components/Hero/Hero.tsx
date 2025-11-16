@@ -5,18 +5,20 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
+import HeroMask from "./HeroMask";
+import HeroVideo from "./HeroVideo";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const titleLeftRef = useRef<HTMLHeadingElement>(null);
-  const titleRightRef = useRef<HTMLHeadingElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   useGSAP(() => {
-    console.log(titleLeftRef.current);
+    const titleLeftRef = titleRef.current?.querySelector(".title-welcome");
+    const titleRightRef = titleRef.current?.querySelector(".title-name");
     gsap.fromTo(
-      titleLeftRef.current,
+      titleLeftRef!,
       {
         opacity: 0,
         "--enter-offset": "-200px",
@@ -28,7 +30,7 @@ export default function Hero() {
       }
     );
     gsap.fromTo(
-      titleRightRef.current,
+      titleRightRef!,
       {
         opacity: 0,
         "--enter-offset": "200px",
@@ -75,33 +77,8 @@ export default function Hero() {
   return (
     <section ref={containerRef} className="hero-container">
       <div className="hero-content relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="title-hero-container relative">
-          <h1 className="title-container font-display text-[20vh] text-accent">
-            <span ref={titleLeftRef} className="title-welcome">
-              WELCOME
-            </span>
-            <span ref={titleRightRef} className="title-name">
-              REVERBE
-            </span>
-          </h1>
-        </div>
-        <div className="video-hero-container flex absolute top-0 left-0 w-full h-full -z-1">
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            src="/video/9510023-uhd_4096_2160_25fps.mp4"
-            autoPlay
-            muted
-            loop
-          >
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute flex justify-center items-center inset-0">
-            <h2 className="text-text text-[12vh] font-display uppercase">
-              Upcycled Fashion Show
-            </h2>
-          </div>
-        </div>
+        <HeroMask ref={titleRef} />
+        <HeroVideo ref={videoRef} />
       </div>
     </section>
   );
