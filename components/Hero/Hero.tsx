@@ -1,103 +1,107 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import type { CSSProperties } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const maskTextRef = useRef<SVGTextElement | null>(null);
-  const maskedVideoRef = useRef<HTMLVideoElement | null>(null);
+  const containerRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const titleLeftRef = useRef<HTMLHeadingElement>(null);
+  const titleRightRef = useRef<HTMLHeadingElement>(null);
+  useGSAP(() => {
+    console.log(titleLeftRef.current);
+    gsap.fromTo(
+      titleLeftRef.current,
+      {
+        opacity: 0,
+        "--enter-offset": "-200px",
+      },
+      {
+        opacity: 1,
+        "--enter-offset": "0px",
+        duration: 1.5,
+      }
+    );
+    gsap.fromTo(
+      titleRightRef.current,
+      {
+        opacity: 0,
+        "--enter-offset": "200px",
+      },
+      {
+        opacity: 1,
+        "--enter-offset": "0px",
+        delay: 0.3,
+        duration: 1.5,
+      }
+    );
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    const maskText = maskTextRef.current;
-    const maskedVideo = maskedVideoRef.current;
-    if (!section || !maskText || !maskedVideo) return;
-
-    // point de départ
-    gsap.set(maskText, {
-      scale: 1,
-      transformOrigin: "45% 50%", // vise vers la lettre "V" par ex
-    });
-
-    gsap.set(maskedVideo, {
-      scale: 0.9, // vidéo un peu plus petite que sa taille normale
-      transformOrigin: "45% 0%",
-    });
-
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-          pin: true,
-          onUpdate: (self) => {
-            section.style.setProperty("--progress", self.progress.toFixed(4));
-          },
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        pin: true,
+        onUpdate: (self) => {
+          const easedProgress = gsap.parseEase("power1.out")(self.progress);
+          containerRef.current?.style.setProperty(
+            "--progress",
+            `${easedProgress}`
+          );
         },
-      })
-      // 1) Le trou (REVERB) grossit
-      .to(maskText, {
-        scale: 5, // combien le trou grossit
-        ease: "power2.inOut",
-      })
-      // 2) La vidéo revient à sa taille normale (et pas plus)
-      .to(
-        maskedVideo,
-        {
-          scale: 1, // taille normale, jamais > 1
-          ease: "power2.out",
-        },
-        0 // en même temps que le masque
-      );
-  }, []);
+      },
+    });
+    tl.to(
+      videoRef.current,
+      {
+        scale: 1,
+        duration: 1,
+        ease: "power1.out",
+        delay: 0.6,
+      },
+      0.6
+    );
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+  });
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-black"
-      style={{ ["--progress" as unknown as string]: 0 } as CSSProperties}
-    >
-      {/* MASK SVG */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-20">
-        <mask id="mask-text">
-          <rect width="100%" height="100%" fill="black" />
-          <text
-            ref={maskTextRef}
-            x="50%"
-            y="50%"
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fontSize="20vw"
-            fontWeight="900"
-            fill="white"
-            className="mask-text-node"
+    <section ref={containerRef} className="hero-container">
+      <div className="hero-content relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="title-hero-container relative">
+          <h1 className="title-container font-display text-[20vh] text-accent">
+            <span ref={titleLeftRef} className="title-welcome">
+              WELCOME
+            </span>
+            <span ref={titleRightRef} className="title-name">
+              REVERBE
+            </span>
+          </h1>
+        </div>
+        <div className="video-hero-container flex absolute top-0 left-0 w-full h-full -z-1">
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            src="/video/9510023-uhd_4096_2160_25fps.mp4"
+            autoPlay
+            muted
+            loop
           >
-            REVERB
-          </text>
-        </mask>
-      </svg>
-
-      {/* LAYER masqué par le texte */}
-      <div
-        className="absolute inset-0 z-20"
-        style={{ mask: "url(#mask-text)", WebkitMask: "url(#mask-text)" }}
-      >
-        <video
-          ref={maskedVideoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/video/9510023-uhd_4096_2160_25fps.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute flex justify-center items-center inset-0">
+            <h2 className="text-text text-[12vh] font-display uppercase">
+              Upcycled Fashion Show
+            </h2>
+          </div>
+        </div>
       </div>
     </section>
   );

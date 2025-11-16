@@ -25,21 +25,23 @@ body.no-scroll {
 }
 
 /* video dans le masque */
-.mask-layer {
-  transform: scale(calc(1 + var(--progress) * 6));
-  transform-origin: 45%;
-  will-change: transform;
+.hero-container {
+  --progress: 0;
 }
 
-/* vidéo visible dans le masque */
-.masked-video {
-  transform: scale(calc(0.8 + var(--progress) * 0.2));
-  opacity: calc(0.4 + var(--progress) * 0.6);
-  filter: blur(calc((1 - var(--progress)) * 8px));
-  will-change: transform, opacity, filter;
+.video-hero-container {
+  transform: scale(var(--progress));
 }
 
-.mask-text-node {
-  transform-box: fill-box;
-  transform-origin: center;
+.title-container {
+  display: flex;
+}
+
+.title-welcome {
+  transform: translate3d(calc(var(--progress) * (-120vw + 100%) - 0.5vw), 0, 0)
+    translateY(var(--enter-offset, 0px));
+}
+.title-name {
+  transform: translate3d(calc(var(--progress) * (100vw - 100%) + 0.5vw), 0, 0)
+    translateY(var(--enter-offset, 0px));
 }
